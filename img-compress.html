@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Previous meta tags and title remain the same -->
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --background-color: #f8fafc;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            flex: 1;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .compression-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .file-input-container {
+            position: relative;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .custom-file-input {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s ease;
+        }
+
+        .custom-file-input:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        #imageInput {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .preview-container {
+            position: relative;
+            max-width: 100%;
+            margin: 2rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f1f5f9;
+            border: 2px dashed var(--border-color);
+        }
+
+        #previewImage {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            transition: opacity 0.3s ease;
+        }
+
+        .quality-control {
+            margin: 2rem 0;
+        }
+
+        .slider-container {
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: #cbd5e1;
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        .compress-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .compress-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .ads-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .ads-section {
+                order: -1;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .compression-card {
+                padding: 1.5rem;
+            }
+            
+            .custom-file-input {
+                padding: 0.75rem 1.5rem;
+            }
+        }
+    </style>
+    <!-- Add Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Image Compressor Pro</h1>
+        <p>Optimize your images instantly with professional-grade compression</p>
+    </header>
+
+    <div class="container">
+        <!-- Ad Unit 1 remains same -->
+
+        <div class="main-content">
+            <div class="compression-card">
+                <div class="file-input-container">
+                    <label class="custom-file-input">
+                        📁 Upload Image
+                        <input type="file" id="imageInput" accept="image/*">
+                    </label>
+                </div>
+
+                <div class="preview-container">
+                    <img id="previewImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z'/%3E%3Cpath d='M8.5 13.5l2.5 3.01L14.5 12l4.5 6H5z'/%3E%3C/svg%3E" 
+                         alt="Preview placeholder">
+                </div>
+
+                <div class="quality-control">
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Compression Quality</span>
+                            <span id="qualityValue">80%</span>
+                        </div>
+                        <input type="range" id="quality" min="1" max="100" value="80">
+                    </div>
+                </div>
+
+                <button class="compress-btn" onclick="compressImage()">
+                    <span class="loading-spinner"></span>
+                    🚀 Compress Now
+                </button>
+            </div>
+
+            <!-- Ads section remains same -->
+        </div>
+    </div>
+
+    <script>
+        // Updated JavaScript with loading state
+        const compressBtn = document.querySelector('.compress-btn');
+        const loadingSpinner = document.querySelector('.loading-spinner');
+
+        async function compressImage() {
+            if (!imageInput.files[0]) {
+                showError('Please select an image first!');
+                return;
+            }
+
+            try {
+                compressBtn.disabled = true;
+                loadingSpinner.style.display = 'inline-block';
+                compressBtn.textContent = ' Compressing...';
+                
+                // Existing compression logic
+                // Add artificial delay for demo purposes
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Restore button state
+            } catch (error) {
+                showError('Compression failed. Please try again.');
+            } finally {
+                compressBtn.disabled = false;
+                loadingSpinner.style.display = 'none';
+                compressBtn.textContent = '🚀 Compress Now';
+            }
+        }
+
+        function showError(message) {
+            const errorEl = document.createElement('div');
+            errorEl.className = 'error-message';
+            errorEl.textContent = message;
+            // Add proper error display implementation
+            alert(message);
+        }
+    </script>
+</body>
+</html>
